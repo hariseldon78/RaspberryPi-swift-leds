@@ -1,3 +1,9 @@
+/*
+
+Imported from the SwiftyGPIO project: https://github.com/uraimo/SwiftyGPIO
+
+*/
+
 #if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
     import Darwin.C
 #elseif os(Linux)
