@@ -21,7 +21,6 @@ import Glibc
 func invert(pin:GPIO){
 	let b=Bool(pin.value)
 	pin.value = Int(!b)
-	print(pin.id, b)
 }
 let 🗑=DisposeBag()
 
