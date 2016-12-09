@@ -11,11 +11,23 @@ import RxSwift
 import SwiftyGPIO
 import Glibc
 
-//func button(pin:GPIO) -> Observable<Bool>
-//{
+func button(pin:GPIO,maxLatency:TimeInterval=0.1,scheduler:SchedulerType=ThreadScheduler()) -> Observable<Bool>
+{
 //	return Observable.create { observer in
-//		
-//}
+//		var previousValue=Bool(pin.value)
+//		var isDisposed=false
+//		let sleepTime=Int32(maxLatency*1000000)
+//		while !isDisposed {
+//			usleep(sleepTime)
+//			let currentValue=Bool(pin.value)
+//			if (
+//		}
+//	}
+	return Observable<Int>
+		.interval(maxLatency, scheduler:scheduler)
+		.map {_ in Bool(pin.value) }
+		.distinctUntilChanged()
+}
 
 func invert(pin:GPIO){
 	let b=Bool(pin.value)
@@ -41,15 +53,17 @@ func app(){
 	
 	Observable<Int>.interval(0.5, scheduler:ThreadScheduler())
 		.subscribe (onNext:{_ in
-			print("this is in a background thread")
+//			print("this is in a background thread")
 			invert(pin:led0)
 		}).addDisposableTo(🗑)
 	
 	Observable<Int>.interval(0.1, scheduler:MainScheduler.instance)
 		.subscribe (onNext:{_ in
-			print("this is in the main thread")
+//			print("this is in the main thread")
 			invert(pin:led1)
 		}).addDisposableTo(🗑)
-	
+	button(pin:btn0).subscribe (onNext:{
+		print($0)
+	}).addDisposableTo(🗑)
 
 }
